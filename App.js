@@ -12,9 +12,31 @@ import { theme } from "./colors";
 export default function App() {
   const [working, setWorking] = useState(true);
   const [text, setText] = useState("");
+  const [toDos, setToDos] = useState({});
   const travel = () => setWorking(false);
   const work = () => setWorking(true);
   const onChangeText = (payload) => setText(payload);
+  
+
+  const addToDo = () => {
+    
+    // 요게 있으면 화면에 확인 뜬다!
+    alert(text);
+    
+    if (text === "") {
+      return;
+    }
+    const newToDos = Object.assign({}, toDos, {
+      [Date.now()]: { text, work: working },
+    });
+    setToDos(newToDos);
+    setText("");
+  };
+
+  // 요골로 값 확인
+  
+  console.log(toDos);
+  
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -38,7 +60,11 @@ export default function App() {
         </TouchableOpacity>
       </View>
       <TextInput
+        onSubmitEditing={addToDo}
         onChangeText={onChangeText}
+
+        //  리턴 타입의 키를 done으로 바꿔준겨!!
+        returnKeyType="done"
         value={text}
         placeholder={working ? "Add a To Do" : "Where do you want to go?"}
         style={styles.input}
@@ -46,6 +72,8 @@ export default function App() {
     </View>
   );
 }
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -61,6 +89,7 @@ const styles = StyleSheet.create({
     fontSize: 38,
     fontWeight: "600",
   },
+
   input: {
     backgroundColor: "white",
     paddingVertical: 15,
